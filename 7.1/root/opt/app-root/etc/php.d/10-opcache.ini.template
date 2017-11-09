@@ -5,7 +5,7 @@ zend_extension=opcache.so
 opcache.enable=1
 
 ; Determines if Zend OPCache is enabled for the CLI version of PHP
-;opcache.enable_cli=0
+opcache.enable_cli=1
 
 ; The OPcache shared memory storage size.
 opcache.memory_consumption=${OPCACHE_MEMORY_CONSUMPTION}
@@ -28,7 +28,7 @@ opcache.max_accelerated_files=4000
 
 ; When disabled, you must reset the OPcache manually or restart the
 ; webserver for changes to the filesystem to take effect.
-;opcache.validate_timestamps=1
+opcache.validate_timestamps=0
 
 ; How often (in seconds) to check file timestamps for changes to the shared
 ; memory storage allocation. ("1" means validate once per second, but only
@@ -98,7 +98,7 @@ opcache.max_file_size=1M
 ; RPM note : file cache directory must be owned by process owner
 ;   for mod_php, see /etc/httpd/conf.d/php.conf
 ;   for php-fpm, see /etc/php-fpm.d/*conf
-;opcache.file_cache=
+opcache.file_cache=/tmp/opcache
 
 ; Enables or disables opcode caching in shared memory.
 ;opcache.file_cache_only=0
