@@ -41,6 +41,8 @@ RUN wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm 
                   php72-php-pecl-redis && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS --nogpgcheck && \
     rpm -V $INSTALL_PKGS && \
+    rpm -e --nodeps $(rpm -qa httpd) && \
+    rpm -e --nodeps $(rpm -qa httpd-tools) && \
     yum clean all -y && \
     rm -rf /var/cache/yum && \
     rm /tmp/epel-release-latest-7.noarch.rpm /tmp/remi-release-7.rpm
