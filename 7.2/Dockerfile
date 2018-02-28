@@ -40,7 +40,8 @@ RUN wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm 
                   php72-php-gmp php72-php-pecl-apcu rh-mariadb102-mariadb rh-postgresql96" && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS --nogpgcheck && \
     rpm -V $INSTALL_PKGS && \
-    yum clean all -y
+    yum clean all -y && \
+    rm -rf /var/cache/yum
 
 # Copy the S2I scripts from the specific language image to $STI_SCRIPTS_PATH
 COPY ./s2i/bin/ $STI_SCRIPTS_PATH
