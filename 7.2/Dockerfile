@@ -37,11 +37,13 @@ RUN wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm 
     INSTALL_PKGS="httpd24-httpd php72 php72-php php72-php-mysqlnd php72-php-pgsql php72-php-bcmath \
                   php72-php-gd php72-php-intl php72-php-ldap php72-php-mbstring php72-php-pdo \
                   php72-php-process php72-php-soap php72-php-opcache php72-php-xml php72-php-pecl-libsodium \
-                  php72-php-gmp php72-php-pecl-apcu rh-mariadb102-mariadb rh-postgresql96" && \
+                  php72-php-gmp php72-php-pecl-apcu rh-mariadb102-mariadb rh-postgresql96" 
+                  php72-php-pecl-redis && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS --nogpgcheck && \
     rpm -V $INSTALL_PKGS && \
     yum clean all -y && \
-    rm -rf /var/cache/yum
+    rm -rf /var/cache/yum && \
+    rm /tmp/epel-release-latest-7.noarch.rpm /tmp/remi-release-7.rpm
 
 # Copy the S2I scripts from the specific language image to $STI_SCRIPTS_PATH
 COPY ./s2i/bin/ $STI_SCRIPTS_PATH
@@ -52,19 +54,19 @@ COPY ./root/ /
 # In order to drop the root user, we have to make some directories world
 # writeable as OpenShift default security model is to run the container under
 # random UID.
-RUN sed -i -f /opt/app-root/etc/httpdconf.sed /opt/rh/httpd24/root/etc/httpd/conf/httpd.conf && \
+RUN sed -i -f ${APP_ROOT}/etc/httpdconf.sed /opt/rh/httpd24/root/etc/httpd/conf/httpd.conf && \
     mv /etc/httpd/conf.d/php72-php.conf /opt/rh/httpd24/root/etc/httpd/conf.d/ && \
     mv /etc/httpd/conf.modules.d/15-php72-php.conf /opt/rh/httpd24/root/etc/httpd/conf.modules.d/ && \
     mv /etc/httpd/modules/libphp72.so /opt/rh/httpd24/root/etc/httpd/modules/ && \
     sed -i '/php_value session.save_path/d' /opt/rh/httpd24/root/etc/httpd/conf.d/php72-php.conf && \
     head -n151 /opt/rh/httpd24/root/etc/httpd/conf/httpd.conf | tail -n1 | grep "AllowOverride All" || exit && \
-    echo "IncludeOptional /opt/app-root/etc/conf.d/*.conf" >> /opt/rh/httpd24/root/etc/httpd/conf/httpd.conf && \
+    echo "IncludeOptional ${APP_ROOT}/etc/conf.d/*.conf" >> /opt/rh/httpd24/root/etc/httpd/conf/httpd.conf && \
     mkdir /tmp/sessions && \
     mkdir /tmp/opcache && \
-    chown -R 1001:0 /opt/app-root /tmp/sessions /tmp/opcache && \
+    chown -R 1001:0 ${APP_ROOT} /tmp/sessions /tmp/opcache && \
     chmod -R a+rwx /tmp/sessions && \
     chmod -R a+rwx /tmp/opcache && \
-    chmod -R ug+rwx /opt/app-root && \
+    chmod -R ug+rwx ${APP_ROOT} && \
     chmod -R a+rwx /etc/opt/remi/php72 && \
     chmod -R a+rwx /opt/rh/httpd24/root/var/run/httpd && \
     rpm-file-permissions
