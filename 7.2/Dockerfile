@@ -29,9 +29,9 @@ LABEL summary="$SUMMARY" \
       maintainer="SoftwareCollections.org <sclorg@redhat.com>"
 
 # Install Apache httpd and PHP
-RUN wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -O /tmp/epel-release-latest-7.noarch.rpm \
-    wget http://rpms.remirepo.net/enterprise/remi-release-7.rpm -O /tmp/remi-release-7.rpm \
-    rpm -Uvh /tmp/remi-release-7.rpm /tmp/epel-release-latest-7.noarch.rpm \
+RUN wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -O /tmp/epel-release-latest-7.noarch.rpm && \
+    wget http://rpms.remirepo.net/enterprise/remi-release-7.rpm -O /tmp/remi-release-7.rpm && \
+    rpm -Uvh /tmp/remi-release-7.rpm /tmp/epel-release-latest-7.noarch.rpm && \
     yum install -y centos-release-scl && \
     yum-config-manager --enable centos-sclo-rh-testing && \
     INSTALL_PKGS="php72 php72-php php72-php-mysqlnd php72-php-pgsql php72-php-bcmath \
