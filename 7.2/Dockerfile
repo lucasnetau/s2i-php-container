@@ -34,7 +34,7 @@ RUN wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm 
     rpm -Uvh /tmp/remi-release-7.rpm /tmp/epel-release-latest-7.noarch.rpm && \
     yum install -y centos-release-scl && \
     yum-config-manager --enable centos-sclo-rh-testing && \
-    INSTALL_PKGS="php72 php72-php php72-php-mysqlnd php72-php-pgsql php72-php-bcmath \
+    INSTALL_PKGS="httpd24-httpd php72 php72-php php72-php-mysqlnd php72-php-pgsql php72-php-bcmath \
                   php72-php-gd php72-php-intl php72-php-ldap php72-php-mbstring php72-php-pdo \
                   php72-php-process php72-php-soap php72-php-opcache php72-php-xml \
                   php72-php-gmp php72-php-pecl-apcu rh-mariadb102-mariadb rh-postgresql96" && \
