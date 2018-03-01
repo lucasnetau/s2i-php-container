@@ -37,8 +37,8 @@ RUN wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm 
     INSTALL_PKGS="httpd24-httpd php72 php72-php php72-php-mysqlnd php72-php-pgsql php72-php-bcmath \
                   php72-php-gd php72-php-intl php72-php-ldap php72-php-mbstring php72-php-pdo \
                   php72-php-process php72-php-soap php72-php-opcache php72-php-xml php72-php-pecl-libsodium \
-                  php72-php-gmp php72-php-pecl-apcu rh-mariadb102-mariadb rh-postgresql96" \
-                  php72-php-pecl-redis && \
+                  php72-php-gmp php72-php-pecl-apcu rh-mariadb102-mariadb rh-postgresql96 \
+                  php72-php-pecl-redis" && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS --nogpgcheck && \
     rpm -V $INSTALL_PKGS && \
     rpm -e --nodeps $(rpm -qa httpd) && \
