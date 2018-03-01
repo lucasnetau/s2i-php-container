@@ -41,8 +41,11 @@ RUN wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm 
                   php72-php-pecl-redis" && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS --nogpgcheck && \
     rpm -V $INSTALL_PKGS && \
-    rpm -e --nodeps $(rpm -qa httpd) && \
-    rpm -e --nodeps $(rpm -qa httpd-tools) && \
+    mv /etc/httpd/conf.d/php72-php.conf /opt/rh/httpd24/root/etc/httpd/conf.d/ && \
+    mv /etc/httpd/conf.modules.d/15-php72-php.conf /opt/rh/httpd24/root/etc/httpd/conf.modules.d/ && \
+    mv /etc/httpd/modules/libphp72.so /opt/rh/httpd24/root/etc/httpd/modules/ && \
+    rpm -ev --nodeps $(rpm -qa httpd) && \
+    rpm -ev --nodeps $(rpm -qa httpd-tools) && \
     yum clean all -y && \
     rm -rf /var/cache/yum && \
     rm /tmp/epel-release-latest-7.noarch.rpm /tmp/remi-release-7.rpm
@@ -57,9 +60,6 @@ COPY ./root/ /
 # writeable as OpenShift default security model is to run the container under
 # random UID.
 RUN sed -i -f ${APP_ROOT}/etc/httpdconf.sed /opt/rh/httpd24/root/etc/httpd/conf/httpd.conf && \
-    mv /etc/httpd/conf.d/php72-php.conf /opt/rh/httpd24/root/etc/httpd/conf.d/ && \
-    mv /etc/httpd/conf.modules.d/15-php72-php.conf /opt/rh/httpd24/root/etc/httpd/conf.modules.d/ && \
-    mv /etc/httpd/modules/libphp72.so /opt/rh/httpd24/root/etc/httpd/modules/ && \
     sed -i '/php_value session.save_path/d' /opt/rh/httpd24/root/etc/httpd/conf.d/php72-php.conf && \
     head -n151 /opt/rh/httpd24/root/etc/httpd/conf/httpd.conf | tail -n1 | grep "AllowOverride All" || exit && \
     echo "IncludeOptional ${APP_ROOT}/etc/conf.d/*.conf" >> /opt/rh/httpd24/root/etc/httpd/conf/httpd.conf && \
