@@ -6,7 +6,9 @@ FROM centos/s2i-base-centos7
 EXPOSE 8080
 
 ENV PHP_VERSION=7.2 \
-    PATH=$PATH:/opt/remi/php72/root/usr/bin
+    PATH=$PATH:/opt/remi/php72/root/usr/bin \
+    LANG=en_AU.UTF-8 \
+    LC_ALL=en_AU.UTF-8
 
 ENV SUMMARY="Platform for building and running PHP $PHP_VERSION applications" \
     DESCRIPTION="PHP $PHP_VERSION available as docker container is a base platform for \
